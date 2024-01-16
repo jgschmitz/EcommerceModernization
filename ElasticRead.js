@@ -1,14 +1,24 @@
 const { Client } = require('@elastic/elasticsearch');
-# requires npm install elasticsearch
-// Replace 'your_connection_string' with your actual Elasticsearch connection string
-const connection_string = 'your_connection_string';
 
-// Create an Elasticsearch client
-const client = new Client({ node: connection_string });
+// Replace these values with your actual Elasticsearch connection details
+const clusterId = 'dbe766fc301b4286b2b74ad8ba303fce';
+const username = 'elastic';
+const password = 'uQFTxSsR7Kmh72PAGM5mplDv';
+
+// Create an Elasticsearch client with user access
+const client = new Client({
+  cloud: {
+    id: clusterId,
+  },
+  auth: {
+    username,
+    password,
+  },
+});
 
 // Example: Retrieve data from an index
-const index_name = 'your_index_name';
-const query_body = {
+const indexName = 'your_index_name';
+const queryBody = {
   query: {
     match_all: {}  // You can customize your query here
   }
@@ -17,8 +27,8 @@ const query_body = {
 // Perform a search
 async function searchData() {
   const { body } = await client.search({
-    index: index_name,
-    body: query_body
+    index: indexName,
+    body: queryBody
   });
 
   // Process the result
